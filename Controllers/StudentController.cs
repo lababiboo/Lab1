@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Grpc.Core;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApplication1.Models;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+
 
 namespace WebApplication1.Controllers
 {
@@ -8,8 +11,10 @@ namespace WebApplication1.Controllers
     public class StudentController : Controller
     {
         private List<Student> lstStudents = new List<Student>();
-        public StudentController()
+        private readonly IHostingEnvironment env;
+        public StudentController(IHostingEnvironment _env)
         {
+            env = _env;
             lstStudents = new List<Student>()
             {
 
@@ -50,8 +55,16 @@ namespace WebApplication1.Controllers
             return View();
         }
         [HttpPost("Add")]
-        public IActionResult Create(Student s)
+        public async Task<ActionResult> Create(Student s)
         {
+            if (s.Img != null)
+            {
+                var file = Path.Combine(env.ContentRootPath, "wwwroot\\FileImg", s.Img.FileName);
+                using (FileStream fileStream = new FileStream(file, FileMode.Create))
+                {
+                    await s.Img.CopyToAsync(fileStream);
+                }
+            }
             s.Id = lstStudents.Last<Student>().Id + 1;
             lstStudents.Add(s);
             return View("Index", lstStudents);
