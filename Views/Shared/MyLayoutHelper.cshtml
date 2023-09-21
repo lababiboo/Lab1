@@ -23,18 +23,22 @@
     <!-- End Top nav -->
     <div id="layoutSidenav">
         <!-- Begin Left menu -->
-        @await Component.InvokeAsync("Render");
+        <div id="layoutSidenav_nav">
+            @await Component.InvokeAsync("Render");
+        </div>
         <!-- End Left menu -->
         <!-- Begin Right content -->
         <div id="layoutSidenav_content">
             <!-- Begin Main -->
             <main>
                 @RenderBody()
-                <!-- End Main -->
-                <!-- Begin Footer -->
-                
-                <partial name="Footer" />
-                <!-- End Footer -->
+            </main>
+            <!-- End Main -->
+            <!-- Begin Footer -->
+            <footer class="py-4 bg-light mt-auto">
+            <partial name="Footer" />
+            </footer>
+            <!-- End Footer -->
         </div>
         <!-- End Right content -->
     </div>
