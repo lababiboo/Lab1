@@ -1,8 +1,14 @@
-﻿namespace WebApplication1.Models
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace WebApplication1.Models
 {
     public class Student
     {
+        [Required]
         public int Id { get; set; }//Mã sinh viên
+        [Required(ErrorMessage ="Phải nhập tên")]
+        [DisplayName("Name")]
         public string? Name { get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
